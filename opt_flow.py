@@ -58,39 +58,43 @@ if __name__ == '__main__':
     import sys
     print(__doc__)
     try:
-        fn = sys.argv[1]
+        fn = 'videos/cut127.MTS'
     except IndexError:
         fn = 0
 
-    cam = video.create_capture(fn)
+    cam = cv.VideoCapture(fn)
     ret, prev = cam.read()
     prevgray = cv.cvtColor(prev, cv.COLOR_BGR2GRAY)
     show_hsv = False
     show_glitch = False
     cur_glitch = prev.copy()
+    frame_idx = 0
 
     while True:
         ret, img = cam.read()
+        if not ret: 
+            break
         gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         flow = cv.calcOpticalFlowFarneback(prevgray, gray, None, 0.5, 3, 15, 3, 5, 1.2, 0)
         prevgray = gray
+        
+        cv.imwrite('frames/'+str(frame_idx)+'.png', draw_flow(gray, flow))
+        frame_idx += 1
+        # if show_hsv:
+        #     cv.imshow('flow HSV', draw_hsv(flow))
+        # if show_glitch:
+        #     cur_glitch = warp_flow(cur_glitch, flow)
+        #     cv.imshow('glitch', cur_glitch)
 
-        cv.imshow('flow', draw_flow(gray, flow))
-        if show_hsv:
-            cv.imshow('flow HSV', draw_hsv(flow))
-        if show_glitch:
-            cur_glitch = warp_flow(cur_glitch, flow)
-            cv.imshow('glitch', cur_glitch)
-
-        ch = cv.waitKey(5)
-        if ch == 27:
-            break
-        if ch == ord('1'):
-            show_hsv = not show_hsv
-            print('HSV flow visualization is', ['off', 'on'][show_hsv])
-        if ch == ord('2'):
-            show_glitch = not show_glitch
-            if show_glitch:
-                cur_glitch = img.copy()
-            print('glitch is', ['off', 'on'][show_glitch])
-    cv.destroyAllWindows()
+        # ch = cv.waitKey(5)
+        # if ch == 27:
+        #     break
+        # if ch == ord('1'):
+        #     show_hsv = not show_hsv
+        #     print('HSV flow visualization is', ['off', 'on'][show_hsv])
+        # if ch == ord('2'):
+        #     show_glitch = not show_glitch
+        #     if show_glitch:
+        #         cur_glitch = img.copy()
+        #     print('glitch is', ['off', 'on'][show_glitch])
+    # cv.destroyAllWindows()

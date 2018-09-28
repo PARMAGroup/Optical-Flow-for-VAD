@@ -40,12 +40,15 @@ class App:
         self.track_len = 10
         self.detect_interval = 5
         self.tracks = []
-        self.cam = video.create_capture(video_src)
+        self.cam = cv.VideoCapture(video_src)
         self.frame_idx = 0
 
     def run(self):
         while True:
             _ret, frame = self.cam.read()
+            if not _ret: 
+                break
+
             frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
             vis = frame.copy()
 
@@ -64,7 +67,7 @@ class App:
                     if len(tr) > self.track_len:
                         del tr[0]
                     new_tracks.append(tr)
-                    cv.circle(vis, (x, y), 2, (0, 255, 0), -1)
+                    cv.circle(vis, (x, y), 10, (0, 255, 0), -1)
                 self.tracks = new_tracks
                 cv.polylines(vis, [np.int32(tr) for tr in self.tracks], False, (0, 255, 0))
                 draw_str(vis, (20, 20), 'track count: %d' % len(self.tracks))
@@ -82,16 +85,14 @@ class App:
 
             self.frame_idx += 1
             self.prev_gray = frame_gray
-            cv.imshow('lk_track', vis)
+            cv.imwrite('frames/'+str(self.frame_idx - 1)+'.png', vis)
 
-            ch = cv.waitKey(1)
-            if ch == 27:
-                break
 
 def main():
     import sys
     try:
-        video_src = sys.argv[1]
+        # video_src = sys.argv[1]
+        video_src = 'videos/cut127.MTS'
     except:
         video_src = 0
 
