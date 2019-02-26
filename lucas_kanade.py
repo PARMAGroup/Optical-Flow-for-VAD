@@ -9,12 +9,14 @@ between frames.
 
 Usage
 -----
-lk_track.py [<video_source>]
+lucas_kanade.py [<video_source>]
 
 
 Keys
 ----
 ESC - exit
+
+Code extracted from OpenCV documentation.
 '''
 
 # Python 2/3 compatibility
@@ -22,8 +24,8 @@ from __future__ import print_function
 
 import numpy as np
 import cv2 as cv
-import video
-from common import anorm2, draw_str
+import modules.video as video
+from modules.common import anorm2, draw_str
 from time import clock
 
 lk_params = dict( winSize  = (15, 15),
@@ -89,13 +91,7 @@ class App:
 
 
 def main():
-    import sys
-    try:
-        # video_src = sys.argv[1]
-        video_src = 'videos/cut127.MTS'
-    except:
-        video_src = 0
-
+    video_src = 'videos/cut127.MTS'
     print(__doc__)
     App(video_src).run()
     cv.destroyAllWindows()

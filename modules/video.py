@@ -27,6 +27,7 @@ Keys:
     ESC    - exit
     SPACE  - save current frame to <shot path> directory
 
+Code extracted from OpenCV documentation.
 '''
 
 # Python 2/3 compatibility
@@ -41,8 +42,8 @@ import cv2 as cv
 from time import clock
 
 # local modules
-from tst_scene_render import TestSceneRender
-import common
+from modules.tst_scene_render import TestSceneRender
+import modules.common as common
 
 class VideoSynthBase(object):
     def __init__(self, size=None, noise=0.0, bg = None, **params):

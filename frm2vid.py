@@ -4,11 +4,14 @@ import os
  
 from os.path import isfile, join
  
+'''
+    This script contains the code that transform a group of frames into a video.
+'''
+
 def convert_frames_to_video(pathIn,pathOut,fps):
     frame_array = []
     files = [f for f in os.listdir(pathIn) if isfile(join(pathIn, f))]
-    # print(files)
-    # print(files[0][0:-4])
+
     #for sorting the file names properly
     files.sort(key = lambda x: int(x[0:-4]))
  
@@ -18,7 +21,6 @@ def convert_frames_to_video(pathIn,pathOut,fps):
         img = cv2.imread(filename)
         height, width, layers = img.shape
         size = (width,height)
-        print(filename)
         #inserting the frames into an image array
         frame_array.append(img)
  

@@ -2,7 +2,7 @@
 '''
 example to show optical flow
 
-USAGE: opt_flow.py [<video_source>]
+USAGE: farneback.py [<video_source>]
 
 Keys:
  1 - toggle HSV flow visualization
@@ -10,6 +10,8 @@ Keys:
 
 Keys:
     ESC    - exit
+
+Code extracted from OpenCV documentation.
 '''
 
 # Python 2/3 compatibility
@@ -17,7 +19,7 @@ from __future__ import print_function
 
 import numpy as np
 import cv2 as cv
-import video
+import modules.video as video
 
 
 def draw_flow(img, flow, step=16):
